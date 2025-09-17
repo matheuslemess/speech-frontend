@@ -58,7 +58,7 @@ function DashboardPage() {
         return;
       }
       try {
-        const response = await api.get('/speeches', {
+        const response = await api.get('/api/speeches', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSpeeches(response.data);
@@ -77,7 +77,7 @@ function DashboardPage() {
 
     try {
       const token = localStorage.getItem('token');
-      await api.delete(`/speeches/${speechToDelete.id}`, {
+      await api.delete(`/api/speeches/${speechToDelete.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSpeeches(currentSpeeches => currentSpeeches.filter(speech => speech.id !== speechToDelete.id));

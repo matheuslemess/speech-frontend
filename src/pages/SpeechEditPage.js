@@ -40,7 +40,7 @@ function SpeechEditPage() {
       setIsFetching(true);
       try {
         const token = localStorage.getItem('token');
-        const response = await api.get(`/speeches/${id}`, {
+        const response = await api.get(`/api/speeches/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setTitle(response.data.title);
@@ -60,7 +60,7 @@ function SpeechEditPage() {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await api.put(`/speeches/${id}`, 
+      await api.put(`/api/speeches/${id}`, 
         { title, content },
         { headers: { Authorization: `Bearer ${token}` } }
       );

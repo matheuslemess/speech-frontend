@@ -37,7 +37,7 @@ function RegisterPage() {
     }
 
     try {
-      await api.post('/auth/register', { email, password });
+      await api.post('/api/auth/register', { email, password });
 
       // Mostra a notificação de sucesso
       toast({

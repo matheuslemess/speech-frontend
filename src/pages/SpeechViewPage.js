@@ -51,7 +51,7 @@ function SpeechViewPage() {
     const fetchSpeech = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await api.get(`/speeches/${id}`, {
+        const response = await api.get(`/api/speeches/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSpeech(response.data);

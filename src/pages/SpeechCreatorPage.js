@@ -36,7 +36,7 @@ function SpeechCreatorPage() {
         return;
       }
 
-      await api.post('/speeches', 
+      await api.post('/api/speeches', 
         { title, content },
         { headers: { Authorization: `Bearer ${token}` } }
       );

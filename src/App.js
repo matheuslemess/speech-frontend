@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+// Em src/App.js
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Box, useColorMode } from '@chakra-ui/react'; // Importe useColorMode
+import ProtectedRoute from './components/ProtectedRoute';
+
+// ... (imports das páginas)
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import DashboardPage from './pages/DashboardPage';
+import SpeechCreatorPage from './pages/SpeechCreatorPage';
+import SpeechEditPage from './pages/SpeechEditPage';
+import SpeechViewPage from './pages/SpeechViewPage';
 
 function App() {
+  // Pega o modo de cor atual
+  const { colorMode } = useColorMode();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box 
+      minH="100vh" 
+      display="flex" 
+      alignItems="center" 
+      justifyContent="center" 
+      // Define o fundo dinamicamente
+      bg={colorMode === 'light' ? 'gray.50' : 'gray.800'}
+      p={4}
+    >
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path="/discurso/novo" element={<ProtectedRoute><SpeechCreatorPage /></ProtectedRoute>} />
+        <Route path="/discurso/:id" element={<ProtectedRoute><SpeechViewPage /></ProtectedRoute>} />
+        <Route path="/discurso/:id/editar" element={<ProtectedRoute><SpeechEditPage /></ProtectedRoute>} />
+      </Routes>
+    </Box>
   );
 }
 

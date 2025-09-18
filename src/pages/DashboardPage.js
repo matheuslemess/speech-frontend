@@ -1,10 +1,11 @@
-// Em src/pages/DashboardPage.js (VERSÃO CHAKRA UI)
+// Em src/pages/DashboardPage.js (VERSÃO COM MENU)
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import api from '../services/api';
 
-// Importando componentes Chakra
+// Importando componentes Chakra ATUALIZADOS
 import {
+  Avatar,
   Box,
   Button,
   Flex,
@@ -22,27 +23,31 @@ import {
   ModalBody,
   ModalCloseButton,
   useColorMode,
-  IconButton,
-  useDisclosure // Hook para controlar o modal
+  useDisclosure,
+  Menu, // <-- NOVO
+  MenuButton, // <-- NOVO
+  MenuList, // <-- NOVO
+  MenuItem, // <-- NOVO
+  MenuDivider, // <-- NOVO
 } from '@chakra-ui/react';
 
-// Importando nossos ícones
-import { FaEdit, FaTrash, FaPlus, FaSun, FaMoon } from "react-icons/fa";
+// Importando nossos ícones ATUALIZADOS
+import { FaEdit, FaTrash, FaPlus, FaSun, FaMoon, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
 
 function DashboardPage() {
   const [speeches, setSpeeches] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const toast = useToast(); // Hook para usar as notificações
+  const toast = useToast();
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const { isOpen, onOpen, onClose } = useDisclosure(); // Controla a visibilidade do modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [speechToDelete, setSpeechToDelete] = useState(null); 
 
-   const openConfirmationModal = (speech) => {
-    setSpeechToDelete(speech); // Guarda o discurso
-    onOpen(); // Abre o modal
+  const openConfirmationModal = (speech) => {
+    setSpeechToDelete(speech);
+    onOpen();
   };
 
   const handleLogout = useCallback(() => {
@@ -96,41 +101,57 @@ function DashboardPage() {
         isClosable: true,
       });
     } finally {
-      onClose(); // Fecha o modal independentemente do resultado
-      setSpeechToDelete(null); // Limpa o estado
+      onClose();
+      setSpeechToDelete(null);
     }
   };
+  
+  // O return de 'loading' foi movido para dentro do JSX principal para manter o cabeçalho visível.
 
-  if (loading) {
-    return (
-      <VStack>
-        <Spinner size="xl" />
-        <Text>Carregando seus discursos...</Text>
-      </VStack>
-    );
-  }
-
-// Em DashboardPage.js (substitua o return)
-
-return (
+  // Em DashboardPage.js (substitua o return)
+  return (
     <>
       <Box minH="100vh" w="100%" p={[4, 6, 8]}>
         <Box maxW="1200px" mx="auto">
+          {/* CABEÇALHO ATUALIZADO COM O MENU */}
           <Flex direction={["column", "row"]} justifyContent="space-between" alignItems="center" mb={6} pb={4} borderBottomWidth={1} gap={4}>
             <Heading as="h2" size="lg">Seus Discursos</Heading>
             <Flex alignItems="center">
-              <IconButton
-                  aria-label="Mudar tema"
-                  icon={colorMode === 'light' ? <FaMoon size={20} /> : <FaSun size={20} />}
-                  onClick={toggleColorMode}
-                  mr={4}
-                  variant="ghost"
-                />
-              <Button onClick={handleLogout} colorScheme="gray" w={["100%", "auto"]}>Sair</Button>
+              
+              {/* NOVO MENU DE USUÁRIO */}
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={'full'}
+                  variant={'link'}
+                  cursor={'pointer'}
+                  minW={0}>
+                  <Avatar
+                    size={'sm'}
+                    // Você pode colocar a foto do usuário aqui no futuro
+                  />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem icon={<FaUserCircle />} onClick={() => navigate('/perfil')}>
+                    Meu Perfil
+                  </MenuItem>
+                  <MenuItem icon={colorMode === 'light' ? <FaMoon /> : <FaSun />} onClick={toggleColorMode}>
+                    Mudar Tema
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem icon={<FaSignOutAlt />} onClick={handleLogout} color="red.500">
+                    Sair
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+
             </Flex>
           </Flex>
-          {loading ? ( <Box textAlign="center" p={10}><Spinner size="xl" /></Box> ) 
-          : speeches.length === 0 ? (
+
+          {/* CONTEÚDO DA PÁGINA (sem alteração na lógica) */}
+          {loading ? ( 
+            <Box textAlign="center" p={10}><Spinner size="xl" /></Box> 
+          ) : speeches.length === 0 ? (
             <Box textAlign="center" p={10} borderWidth={2} borderStyle="dashed" borderRadius="md" mt={6}>
               <Heading as="h3" size="md" mb={2}>Nenhum discurso por aqui!</Heading>
               <Text mb={4}>Que tal começar agora?</Text>
@@ -157,6 +178,8 @@ return (
           )}
         </Box>
       </Box>
+
+      {/* MODAL DE CONFIRMAÇÃO (sem alteração) */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>

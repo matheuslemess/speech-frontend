@@ -88,7 +88,7 @@ function SpeechViewPage() {
 
   return (
     <Box
-      p={6}
+      p={[1, 6, 8]}
       minH="100vh"
       transition="background 0.3s ease-in-out"
     >

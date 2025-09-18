@@ -11,6 +11,7 @@ import DashboardPage from './pages/DashboardPage';
 import SpeechCreatorPage from './pages/SpeechCreatorPage';
 import SpeechEditPage from './pages/SpeechEditPage';
 import SpeechViewPage from './pages/SpeechViewPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   // Pega o modo de cor atual
@@ -30,6 +31,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path="/perfil" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/discurso/novo" element={<ProtectedRoute><SpeechCreatorPage /></ProtectedRoute>} />
         <Route path="/discurso/:id" element={<ProtectedRoute><SpeechViewPage /></ProtectedRoute>} />
         <Route path="/discurso/:id/editar" element={<ProtectedRoute><SpeechEditPage /></ProtectedRoute>} />

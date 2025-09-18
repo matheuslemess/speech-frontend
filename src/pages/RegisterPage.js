@@ -1,9 +1,7 @@
-// Em src/pages/RegisterPage.js (VERSÃO COM BARRA DE FORÇA)
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import api from '../services/api';
 
-// Importando componentes do Chakra
 import {
   Box,
   Button,
@@ -22,9 +20,8 @@ import {
   InputRightElement,
   IconButton,
   Collapse,
-  Progress // Componente para a barra de progresso
+  Progress
 } from '@chakra-ui/react';
-// Importando os ícones
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function RegisterPage() {
@@ -34,41 +31,35 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  
-  // Novo estado para a pontuação da força da senha
   const [strength, setStrength] = useState(0); 
 
   const navigate = useNavigate();
   const toast = useToast();
 
-  // Mapeamento de pontuação para cor e texto
   const strengthLevels = [
-    { label: "", color: "gray" }, // Pontuação 0
-    { label: "Muito Fraca", color: "red" }, // Pontuação 1
-    { label: "Fraca", color: "orange" }, // Pontuação 2
-    { label: "Média", color: "yellow" }, // Pontuação 3
-    { label: "Forte", color: "blue" }, // Pontuação 4
-    { label: "Muito Forte", color: "green" }, // Pontuação 5
+    { label: "", color: "gray" },
+    { label: "Muito Fraca", color: "red" },
+    { label: "Fraca", color: "orange" },
+    { label: "Média", color: "yellow" },
+    { label: "Forte", color: "blue" },
+    { label: "Muito Forte", color: "green" },
   ];
 
-  // useEffect para calcular a força da senha em tempo real
+  const passwordsMatch = password && password === confirmPassword;
+
   useEffect(() => {
     let score = 0;
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/\d/.test(password)) score++;
-    if (/[@$!%*?&]/.test(password)) score++;
-    
-    // Se a senha estiver vazia, a pontuação é 0
     if (password.length === 0) {
       score = 0;
+    } else {
+      if (password.length >= 8) score++;
+      if (/[A-Z]/.test(password)) score++;
+      if (/[a-z]/.test(password)) score++;
+      if (/\d/.test(password)) score++;
+      if (/[@$!%*?&]/.test(password)) score++;
     }
-
     setStrength(score);
   }, [password]);
-
-  const passwordsMatch = password && password === confirmPassword;
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
@@ -76,7 +67,7 @@ function RegisterPage() {
     event.preventDefault();
     setError('');
 
-  if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
@@ -86,7 +77,6 @@ function RegisterPage() {
       return;
     }
 
-    // A senha é considerada válida se atingir a pontuação máxima
     if (strength < 5) {
       setError('Sua senha não atende a todos os critérios de segurança.');
       return;
@@ -115,7 +105,7 @@ function RegisterPage() {
   };
 
   return (
-    <Box p={[4, 6, 8]} maxW="1200px" mx="auto" bg="transparent" w="100%">
+    <Box p={[4, 6, 8]} maxW="500px" mx="auto" w="100%">
       <form onSubmit={handleSubmit}>
         <VStack spacing={4} align="stretch">
           <Heading as="h1" size="lg" mb={4} textAlign="center">Criar Conta</Heading>
@@ -126,15 +116,17 @@ function RegisterPage() {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          <FormControl isRequired>  {/* <-- BLOCO NOVO */}
-  <FormLabel>Nome:</FormLabel>
-  <Input
-    type="text"
-    value={name}
-    onChange={(e) => setName(e.target.value)}
-    placeholder="Seu nome completo"
-  />
-</FormControl>
+
+          <FormControl isRequired>
+            <FormLabel>Nome:</FormLabel>
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Seu nome completo"
+            />
+          </FormControl>
+
           <FormControl isRequired>
             <FormLabel>Email:</FormLabel>
             <Input
@@ -164,7 +156,6 @@ function RegisterPage() {
               </InputRightElement>
             </InputGroup>
             
-            {/* Barra de Força da Senha */}
             <Collapse in={password.length > 0} animateOpacity>
               <VStack align="stretch" mt={2} spacing={1}>
                 <Progress 
@@ -178,10 +169,9 @@ function RegisterPage() {
                 </Text>
               </VStack>
             </Collapse>
-
           </FormControl>
 
-          <FormControl isRequired isInvalid={confirmPassword && !passwordsMatch}>
+          <FormControl isRequired isInvalid={confirmPassword.length > 0 && !passwordsMatch}>
             <FormLabel>Confirmar Senha:</FormLabel>
             <InputGroup>
               <Input
@@ -199,7 +189,7 @@ function RegisterPage() {
                 />
               </InputRightElement>
             </InputGroup>
-            {confirmPassword && !passwordsMatch && (
+            {confirmPassword.length > 0 && !passwordsMatch && (
               <Text color="red.500" fontSize="sm" mt={1}>
                 As senhas não coincidem.
               </Text>

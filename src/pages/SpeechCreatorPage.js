@@ -1,10 +1,21 @@
-// Em src/pages/SpeechCreatorPage.js
-import React, { useState } from 'react'; // <-- Corrigido o erro de digitação (vírgula a mais)
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
-// Importando componentes do Chakra
-import { Box, Button, FormControl, FormLabel, Input, Heading, VStack, HStack, Alert, AlertIcon, AlertDescription, useToast } from '@chakra-ui/react';
+import { 
+  Box, 
+  Button, 
+  FormControl, 
+  FormLabel, 
+  Input, 
+  Heading, 
+  VStack, 
+  HStack, 
+  Alert, 
+  AlertIcon, 
+  AlertDescription, 
+  useToast 
+} from '@chakra-ui/react';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -24,10 +35,10 @@ const MemoizedReactQuill = React.memo(ReactQuill);
 
 function SpeechCreatorPage() {
   const [title, setTitle] = useState('');
-  // O conteúdo agora será uma string HTML (ex: "<p><strong>Olá</strong></p>")
   const [content, setContent] = useState(''); 
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -37,7 +48,7 @@ function SpeechCreatorPage() {
 
     const isContentEmpty = content.replace(/<(.|\n)*?>/g, '').trim().length === 0;
 
-     if (!title || isContentEmpty) {
+    if (!title || isContentEmpty) {
       setError('Título e conteúdo são obrigatórios.');
       return;
     }
@@ -75,54 +86,56 @@ function SpeechCreatorPage() {
   };
 
   return (
-  <Box minH="100vh" w="100%"  p={[4, 6, 8]}>
-      <form onSubmit={handleSubmit}>
-        <VStack spacing={6} align="stretch">
-          <Heading as="h1" size="lg">Criar Novo Discurso</Heading>
-          
-          {error && (
-            <Alert status="error" borderRadius="md">
-              <AlertIcon />
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+    <Box minH="100vh" w="100%" p={[4, 6, 8]}>
+      <Box>
+        <form onSubmit={handleSubmit}>
+          <VStack spacing={6} align="stretch">
+            <Heading as="h1" size="lg">Criar Novo Discurso</Heading>
+            
+            {error && (
+              <Alert status="error" borderRadius="md">
+                <AlertIcon />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
-          <FormControl isRequired>
-            <FormLabel>Título:</FormLabel>
-            <Input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Dê um título para seu discurso"
-            />
-          </FormControl>
+            <FormControl isRequired>
+              <FormLabel>Título:</FormLabel>
+              <Input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Dê um título para seu discurso"
+              />
+            </FormControl>
 
-<FormControl isRequired>
-            <FormLabel>Conteúdo:</FormLabel>
-            <MemoizedReactQuill
-              theme="snow"
-              value={content}
-              onChange={setContent}
-              modules={quillModules} // <-- Passando os módulos estáticos // Adapta o fundo ao tema
-            />
-          </FormControl>
-          
-          <HStack justifyContent="flex-end">
-            <Button onClick={() => navigate('/')}>
-              ← Voltar
-            </Button>
-            <Button
-              type="submit"
-              colorScheme="blue"
-              isLoading={isLoading}
-              loadingText="Salvando..."
-            >
-              Salvar Discurso
-            </Button>
-          </HStack>
+            <FormControl isRequired>
+              <FormLabel>Conteúdo:</FormLabel>
+              <MemoizedReactQuill
+                theme="snow"
+                value={content}
+                onChange={setContent}
+                modules={quillModules}
+              />
+            </FormControl>
+            
+            <HStack justifyContent="flex-end" spacing={4}>
+              <Button onClick={() => navigate('/')} variant="ghost">
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                colorScheme="blue"
+                isLoading={isLoading}
+                loadingText="Salvando..."
+              >
+                Salvar Discurso
+              </Button>
+            </HStack>
 
-        </VStack>
-      </form>
+          </VStack>
+        </form>
+      </Box>
     </Box>
   );
 }

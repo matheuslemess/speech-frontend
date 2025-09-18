@@ -1,7 +1,7 @@
-// src/pages/SpeechViewPage.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+
 import {
   Box,
   Button,
@@ -17,26 +17,22 @@ import {
   useColorMode,
   Flex
 } from '@chakra-ui/react';
-
 import { FaSun, FaMoon, FaExpand, FaCompress } from 'react-icons/fa';
-
 
 function SpeechViewPage() {
   const [speech, setSpeech] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [fontSize, setFontSize] = useState(22);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const { id } = useParams();
   const navigate = useNavigate();
-  const [fontSize, setFontSize] = useState(22);
-
   const { colorMode, toggleColorMode } = useColorMode();
-
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const increaseFontSize = () => setFontSize(prev => prev + 2);
   const decreaseFontSize = () => setFontSize(prev => Math.max(12, prev - 2));
 
-  // Alternar tela cheia
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -62,39 +58,43 @@ function SpeechViewPage() {
         setLoading(false);
       }
     };
-
     fetchSpeech();
   }, [id]);
 
   if (loading) {
     return (
-      <VStack h="100vh" justify="center">
-        <Spinner size="xl" />
-        <Text>Carregando discurso...</Text>
-      </VStack>
+      <Flex h="100vh" justify="center" align="center">
+        <VStack>
+          <Spinner size="xl" />
+          <Text mt={4}>Carregando discurso...</Text>
+        </VStack>
+      </Flex>
     );
   }
 
   if (error) {
     return (
-      <Alert status="error" borderRadius="md" maxW="800px" m="auto" mt={10}>
-        <AlertIcon />
-        <AlertDescription>{error}</AlertDescription>
-      </Alert>
+      <Flex h="100vh" justify="center" align="center" p={4}>
+        <Alert status="error" borderRadius="md" maxW="800px">
+          <AlertIcon />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      </Flex>
     );
   }
 
-  if (!speech) return <Text>Discurso não encontrado.</Text>;
+  if (!speech) {
+    return (
+        <Flex h="100vh" justify="center" align="center">
+            <Text>Discurso não encontrado.</Text>
+        </Flex>
+    );
+  }
 
   return (
-    <Box
-      p={[1, 6, 8]}
-      minH="100vh"
-      transition="background 0.3s ease-in-out"
-    >
-      {/* Barra de controles minimalista */}
+    <Box p={[0, 6, 8]} minH="100vh" transition="background 0.3s ease-in-out">
       <Flex justify="space-between" align="center" mb={6}>
-        <Button size="sm" onClick={() => navigate('/')}>
+        <Button size="sm" onClick={() => navigate('/')} variant="outline">
           ← Voltar
         </Button>
 
@@ -126,7 +126,6 @@ function SpeechViewPage() {
         </HStack>
       </Flex>
 
-      {/* Conteúdo do discurso */}
       <VStack spacing={6} align="stretch">
         <Heading as="h1" size="lg" textAlign="center">
           {speech.title}

@@ -159,7 +159,7 @@ function DashboardPage() {
             </Box>
           ) : (
             <VStack spacing={4} align="stretch">
-              <Flex direction={["column", "row"]} justifyContent="space-between" alignItems="center" gap={4}>
+              <Flex direction="row" justifyContent="space-between" alignItems="center" mb={6} pb={4} borderBottomWidth={1} gap={2}>
                 <Text>Você tem {speeches.length} {speeches.length > 1 ? 'discursos salvos' : 'discurso salvo'}.</Text>
                 <Button onClick={() => navigate('/discurso/novo')} colorScheme="blue" leftIcon={<FaPlus />} w={["100%", "auto"]}>Criar Novo Discurso</Button>
               </Flex>

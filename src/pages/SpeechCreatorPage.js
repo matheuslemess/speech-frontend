@@ -8,6 +8,19 @@ import { Box, Button, FormControl, FormLabel, Input, Heading, VStack, HStack, Al
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import '../styles/quill-custom.css';
+
+const quillModules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{'list': 'ordered'}, {'list': 'bullet'}],
+    ['link'],
+    ['clean']
+  ],
+};
+
+const MemoizedReactQuill = React.memo(ReactQuill);
 
 function SpeechCreatorPage() {
   const [title, setTitle] = useState('');
@@ -22,7 +35,9 @@ function SpeechCreatorPage() {
     event.preventDefault();
     setError('');
 
-    if (!title || !content) {
+    const isContentEmpty = content.replace(/<(.|\n)*?>/g, '').trim().length === 0;
+
+     if (!title || isContentEmpty) {
       setError('Título e conteúdo são obrigatórios.');
       return;
     }
@@ -84,11 +99,11 @@ function SpeechCreatorPage() {
 
 <FormControl isRequired>
             <FormLabel>Conteúdo:</FormLabel>
-            <ReactQuill
+            <MemoizedReactQuill
               theme="snow"
               value={content}
               onChange={setContent}
-              style={{ borderRadius: '8px' }}
+              modules={quillModules} // <-- Passando os módulos estáticos // Adapta o fundo ao tema
             />
           </FormControl>
           

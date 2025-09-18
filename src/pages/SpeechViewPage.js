@@ -94,7 +94,7 @@ function SpeechViewPage() {
     >
       {/* Barra de controles minimalista */}
       <Flex justify="space-between" align="center" mb={6}>
-        <Button size="sm" onClick={() => navigate('/')} colorScheme="gray">
+        <Button size="sm" onClick={() => navigate('/')}>
           ← Voltar
         </Button>
 

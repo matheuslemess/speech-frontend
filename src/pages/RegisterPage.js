@@ -28,6 +28,7 @@ import {
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function RegisterPage() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -75,7 +76,7 @@ function RegisterPage() {
     event.preventDefault();
     setError('');
 
-    if (!email || !password || !confirmPassword) {
+  if (!name || !email || !password || !confirmPassword) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
@@ -92,7 +93,7 @@ function RegisterPage() {
     }
 
     try {
-      await api.post('/api/auth/register', { email, password });
+      await api.post('/api/auth/register', { name, email, password });
       toast({
         title: 'Conta criada com sucesso!',
         description: "Você será redirecionado para a página de login.",
@@ -125,7 +126,15 @@ function RegisterPage() {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-
+          <FormControl isRequired>  {/* <-- BLOCO NOVO */}
+  <FormLabel>Nome:</FormLabel>
+  <Input
+    type="text"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+    placeholder="Seu nome completo"
+  />
+</FormControl>
           <FormControl isRequired>
             <FormLabel>Email:</FormLabel>
             <Input

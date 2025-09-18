@@ -122,7 +122,7 @@ function SpeechEditPage() {
           </FormControl>
           
           <HStack justifyContent="flex-end">
-            <Button onClick={() => navigate('/')} colorScheme="gray">
+            <Button onClick={() => navigate('/')} >
               Cancelar
             </Button>
             <Button

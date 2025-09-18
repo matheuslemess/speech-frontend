@@ -108,8 +108,8 @@ function SpeechCreatorPage() {
           </FormControl>
           
           <HStack justifyContent="flex-end">
-            <Button onClick={() => navigate('/')} colorScheme="gray">
-              Cancelar
+            <Button onClick={() => navigate('/')}>
+              ← Voltar
             </Button>
             <Button
               type="submit"

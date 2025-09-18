@@ -36,6 +36,7 @@ import { FaEdit, FaTrash, FaPlus, FaSun, FaMoon, FaUserCircle, FaSignOutAlt } fr
 
 
 function DashboardPage() {
+  const [user, setUser] = useState(null);
   const [speeches, setSpeeches] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -54,6 +55,36 @@ function DashboardPage() {
     localStorage.removeItem('token');
     navigate('/login');
   }, [navigate]);
+
+    useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Agora você não precisa mais passar os headers manualmente!
+        const [userResponse, speechesResponse] = await Promise.all([
+          api.get('/api/users/me'),
+          api.get('/api/speeches')
+        ]);
+        
+        setUser(userResponse.data);
+        setSpeeches(speechesResponse.data);
+
+      } catch (error) {
+        console.error("Erro ao buscar dados do dashboard:", error);
+        handleLogout(); // Se qualquer chamada falhar, faz logout
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [navigate, handleLogout]);
 
   useEffect(() => {
     const fetchSpeeches = async () => {
@@ -115,7 +146,9 @@ function DashboardPage() {
         <Box maxW="1200px" mx="auto">
           {/* CABEÇALHO ATUALIZADO COM O MENU */}
           <Flex direction={["column", "row"]} justifyContent="space-between" alignItems="center" mb={6} pb={4} borderBottomWidth={1} gap={4}>
-            <Heading as="h2" size="lg">Seus Discursos</Heading>
+              <Heading as="h2" size="lg">
+    {user ? `Olá, ${user.name}!` : 'Seus Discursos'}
+  </Heading>
             <Flex alignItems="center">
               
               {/* NOVO MENU DE USUÁRIO */}
@@ -161,7 +194,7 @@ function DashboardPage() {
             <VStack spacing={4} align="stretch">
               <Flex direction="row" justifyContent="space-between" alignItems="center" mb={6} pb={4} borderBottomWidth={1} gap={2}>
                 <Text>Você tem {speeches.length} {speeches.length > 1 ? 'discursos salvos' : 'discurso salvo'}.</Text>
-                <Button onClick={() => navigate('/discurso/novo')} colorScheme="blue" leftIcon={<FaPlus />} w={["100%", "auto"]}>Criar Novo Discurso</Button>
+                <Button onClick={() => navigate('/discurso/novo')} colorScheme="blue" leftIcon={<FaPlus />} w={["100%", "auto"]}>Novo Discurso</Button>
               </Flex>
               <VStack spacing={4} mt={4} align="stretch">
                 {speeches.map(speech => (
@@ -186,7 +219,7 @@ function DashboardPage() {
           <ModalHeader>Confirmar Exclusão</ModalHeader>
           <ModalCloseButton />
           <ModalBody><Text>Você tem certeza que deseja deletar o discurso: <strong>"{speechToDelete?.title}"</strong>?</Text><Text mt={2} color="gray.500">Esta ação não pode ser desfeita.</Text></ModalBody>
-          <ModalFooter><Button colorScheme="gray" mr={3} onClick={onClose}>Cancelar</Button><Button colorScheme="red" onClick={handleDelete}>Deletar</Button></ModalFooter>
+          <ModalFooter><Button mr={3} onClick={onClose}>Cancelar</Button><Button colorScheme="red" onClick={handleDelete}>Deletar</Button></ModalFooter>
         </ModalContent>
       </Modal>
     </>

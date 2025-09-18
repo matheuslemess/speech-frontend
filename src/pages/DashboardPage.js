@@ -155,7 +155,7 @@ function DashboardPage() {
             <Box textAlign="center" p={10} borderWidth={2} borderStyle="dashed" borderRadius="md" mt={6}>
               <Heading as="h3" size="md" mb={2}>Nenhum discurso por aqui!</Heading>
               <Text mb={4}>Que tal começar agora?</Text>
-              <Button onClick={() => navigate('/discurso/novo')} colorScheme="blue" leftIcon={<FaPlus />}>Criar meu primeiro discurso</Button>
+              <Button onClick={() => navigate('/discurso/novo')} colorScheme="blue" leftIcon={<FaPlus />}>Criar discurso</Button>
             </Box>
           ) : (
             <VStack spacing={4} align="stretch">

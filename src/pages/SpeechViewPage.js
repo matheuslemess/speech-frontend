@@ -4,7 +4,6 @@ import api from '../services/api';
 
 import {
   Box,
-  Button,
   Heading,
   Text,
   VStack,
@@ -17,7 +16,7 @@ import {
   useColorMode,
   Flex
 } from '@chakra-ui/react';
-import { FaSun, FaMoon, FaExpand, FaCompress } from 'react-icons/fa';
+import { FaSun, FaMoon, FaExpand, FaCompress, FaArrowLeft, FaMinus, FaPlus,  } from 'react-icons/fa';
 
 function SpeechViewPage() {
   const [speech, setSpeech] = useState(null);
@@ -94,20 +93,22 @@ function SpeechViewPage() {
   return (
     <Box p={[0, 6, 8]} minH="100vh" transition="background 0.3s ease-in-out">
       <Flex justify="space-between" align="center" mb={6}>
-        <Button size="sm" onClick={() => navigate('/')} variant="outline">
-          ← Voltar
-        </Button>
-
-        <HStack spacing={2}>
+        <HStack spacing={2} justify="center" w="100%">
+          <IconButton
+            aria-label="Voltar"
+            icon={<FaArrowLeft />}
+            onClick={() => navigate('/')}
+            size="sm"
+          />
           <IconButton
             aria-label="Diminuir fonte"
-            icon={<Text fontWeight="bold">-</Text>}
+            icon={<FaMinus />}
             onClick={decreaseFontSize}
             size="sm"
           />
           <IconButton
             aria-label="Aumentar fonte"
-            icon={<Text fontWeight="bold">+</Text>}
+            icon={<FaPlus />}
             onClick={increaseFontSize}
             size="sm"
           />
@@ -124,6 +125,7 @@ function SpeechViewPage() {
             size="sm"
           />
         </HStack>
+
       </Flex>
 
       <VStack spacing={6} align="stretch">

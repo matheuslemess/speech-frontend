@@ -107,7 +107,7 @@ function PracticePage() {
         </Box>
         
         <Flex justify="space-between" align="center" mb={6}>
-          <HStack spacing={4} justify="center" w="100%">
+          <HStack spacing={2} justify="center" w="100%">
             <IconButton
               aria-label="Voltar"
               icon={<FaArrowLeft />}

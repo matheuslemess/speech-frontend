@@ -15,8 +15,8 @@ const config = {
 const theme = extendTheme({
   config,
   fonts: {
-    heading: `'Inter', sans-serif`,
-    body: `'Inter', sans-serif`,
+    heading: `'Playfair Display', serif`, // Fonte para títulos
+    body: `'Inter', sans-serif`,         // Fonte para parágrafos e textos comuns
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react'; // 1. Importe o useCallback
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
@@ -42,31 +42,32 @@ function SpeechCreatorPage() {
   const navigate = useNavigate();
   const toast = useToast();
 
+  // 2. Envolva a função de callback com o useCallback
+  // Isso garante que a função não seja recriada em cada renderização
+  const handleContentChange = useCallback((value) => {
+    setContent(value);
+  }, []);
+
   const handleSubmit = async (event) => {
+    // ... (seu código de handleSubmit continua igual)
     event.preventDefault();
     setError('');
-
     const isContentEmpty = content.replace(/<(.|\n)*?>/g, '').trim().length === 0;
-
     if (!title || isContentEmpty) {
       setError('Título e conteúdo são obrigatórios.');
       return;
     }
-
     setIsLoading(true);
-
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         navigate('/login');
         return;
       }
-
       await api.post('/api/speeches', 
         { title, content },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       toast({
         title: "Discurso criado!",
         description: "Seu novo discurso foi salvo com sucesso.",
@@ -74,9 +75,7 @@ function SpeechCreatorPage() {
         duration: 3000,
         isClosable: true,
       });
-
       navigate('/');
-
     } catch (err) {
       setError('Ocorreu um erro ao salvar o discurso.');
       console.error("Erro ao criar discurso:", err);
@@ -114,7 +113,8 @@ function SpeechCreatorPage() {
               <MemoizedReactQuill
                 theme="snow"
                 value={content}
-                onChange={setContent}
+                // 3. Use a nova função estabilizada aqui
+                onChange={handleContentChange}
                 modules={quillModules}
               />
             </FormControl>

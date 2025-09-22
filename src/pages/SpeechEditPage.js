@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // 1. Importe o useCallback
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
@@ -24,6 +24,9 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import '../styles/quill-custom.css';
 
+// 2. Crie a versão memoizada do ReactQuill, assim como na outra página
+const MemoizedReactQuill = React.memo(ReactQuill);
+
 function SpeechEditPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -34,6 +37,11 @@ function SpeechEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
+
+  // 3. Envolva a função de callback com o useCallback
+  const handleContentChange = useCallback((value) => {
+    setContent(value);
+  }, []);
 
   useEffect(() => {
     const fetchSpeech = async () => {
@@ -56,6 +64,7 @@ function SpeechEditPage() {
   }, [id]);
 
   const handleSubmit = async (event) => {
+    // ... (seu código de handleSubmit continua igual)
     event.preventDefault();
     setIsLoading(true);
     try {
@@ -115,10 +124,11 @@ function SpeechEditPage() {
 
             <FormControl isRequired>
               <FormLabel>Conteúdo:</FormLabel>
-              <ReactQuill
+              {/* 4. Use o componente memoizado e a função estabilizada */}
+              <MemoizedReactQuill
                 theme="snow"
                 value={content}
-                onChange={setContent}
+                onChange={handleContentChange}
               />
             </FormControl>
             

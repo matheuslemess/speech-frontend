@@ -42,19 +42,19 @@ import {
 } from "react-icons/fa";
 
 function DashboardPage() {
-  // --- 3. ESTADOS (States) ---
+  // --- ESTADOS (States) ---
   const [user, setUser] = useState(null);
   const [speeches, setSpeeches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [speechToDelete, setSpeechToDelete] = useState(null); 
 
-  // --- 4. HOOKS ---
+  // --- HOOKS ---
   const navigate = useNavigate();
   const toast = useToast();
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // --- 5. FUNÇÕES E MANIPULADORES DE EVENTOS (Handlers) ---
+  // --- FUNÇÕES E MANIPULADORES DE EVENTOS (Handlers) ---
   const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
     navigate('/login');
@@ -69,7 +69,6 @@ function DashboardPage() {
     if (!speechToDelete) return;
 
     try {
-      // O token agora é injetado pelo interceptor do Axios, não precisa mais estar aqui
       await api.delete(`/api/speeches/${speechToDelete.id}`);
       
       setSpeeches(currentSpeeches => currentSpeeches.filter(speech => speech.id !== speechToDelete.id));
@@ -95,7 +94,7 @@ function DashboardPage() {
     }
   };
 
-  // --- 6. EFEITOS (useEffect) ---
+  // --- EFEITOS (useEffect) ---
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -131,9 +130,9 @@ function DashboardPage() {
     };
 
     fetchData();
-  }, [navigate, handleLogout, toast]); // Adicionado `toast` às dependências
+  }, [navigate, handleLogout, toast]);
 
-  // --- 7. RENDERIZAÇÃO DO COMPONENTE (JSX) ---
+  // --- RENDERIZAÇÃO DO COMPONENTE ---
   return (
     <>
       <Box minH="100vh" w="100%" p={[4, 6, 8]}>
@@ -265,5 +264,4 @@ function DashboardPage() {
   );
 }
 
-// --- 8. EXPORTAÇÃO DO COMPONENTE ---
 export default DashboardPage;

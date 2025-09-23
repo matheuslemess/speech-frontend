@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 import { FaSun, FaMoon, FaExpand, FaCompress, FaArrowLeft, FaMinus, FaPlus, FaBookReader } from 'react-icons/fa';
 
-// Estilos definidos para o modo Paperwhite
 const paperwhiteStyles = {
   bg: '#FBFBF6',
   color: '#111111',
@@ -157,7 +156,6 @@ function SpeechViewPage() {
           <IconButton
             aria-label="Modo Apresentação"
             icon={<FaBookReader />}
-            // ALTERAÇÃO AQUI: Agora o botão liga e desliga o modo.
             onClick={isPaperwhiteMode ? exitPresentationMode : enterPresentationMode}
             size="sm"
             color={isPaperwhiteMode ? paperwhiteStyles.color : undefined}

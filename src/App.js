@@ -1,10 +1,8 @@
-// Em src/App.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Box, useColorMode } from '@chakra-ui/react'; // Importe useColorMode
 import ProtectedRoute from './components/ProtectedRoute';
 
-// ... (imports das páginas)
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';

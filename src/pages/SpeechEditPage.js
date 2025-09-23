@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'; // 1. Importe o useCallback
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
@@ -34,7 +34,6 @@ function SpeechEditPage() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  // 3. Envolva a função de callback com o useCallback
   const handleContentChange = useCallback((value) => {
     setContent(value);
   }, []);
@@ -60,7 +59,6 @@ function SpeechEditPage() {
   }, [id]);
 
   const handleSubmit = async (event) => {
-    // ... (seu código de handleSubmit continua igual)
     event.preventDefault();
     setIsLoading(true);
     try {
@@ -120,7 +118,6 @@ function SpeechEditPage() {
 
             <FormControl isRequired>
               <FormLabel>Conteúdo:</FormLabel>
-              {/* 4. Use o componente memoizado e a função estabilizada */}
                 <TiptapEditor
                     content={content}
                     onContentChange={handleContentChange}

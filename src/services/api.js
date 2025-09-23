@@ -1,5 +1,3 @@
-// Em src/services/api.js
-
 import axios from 'axios';
 
 const api = axios.create({
@@ -7,7 +5,6 @@ const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001',
 });
 
-// --- ADICIONE ESTE TRECHO ---
 // Interceptor de Requisições
 api.interceptors.request.use(
   (config) => {
@@ -26,6 +23,5 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-// --- FIM DO TRECHO ---
 
 export default api;

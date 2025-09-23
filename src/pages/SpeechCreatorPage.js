@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'; // 1. Importe o useCallback
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import TiptapEditor from '../components/TiptapEditor';
@@ -29,14 +29,13 @@ function SpeechCreatorPage() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  // 2. Envolva a função de callback com o useCallback
+  // Envolva a função de callback com o useCallback
   // Isso garante que a função não seja recriada em cada renderização
   const handleContentChange = useCallback((value) => {
     setContent(value);
   }, []);
 
   const handleSubmit = async (event) => {
-    // ... (seu código de handleSubmit continua igual)
     event.preventDefault();
     setError('');
     const isContentEmpty = content.replace(/<(.|\n)*?>/g, '').trim().length === 0;

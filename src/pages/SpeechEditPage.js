@@ -20,12 +20,8 @@ import {
   Flex
 } from '@chakra-ui/react';
 
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import '../styles/quill-custom.css';
-
-// 2. Crie a versão memoizada do ReactQuill, assim como na outra página
-const MemoizedReactQuill = React.memo(ReactQuill);
+import TiptapEditor from '../components/TiptapEditor';
+import '../styles/tiptap-custom.css'; 
 
 function SpeechEditPage() {
   const [title, setTitle] = useState('');
@@ -125,11 +121,10 @@ function SpeechEditPage() {
             <FormControl isRequired>
               <FormLabel>Conteúdo:</FormLabel>
               {/* 4. Use o componente memoizado e a função estabilizada */}
-              <MemoizedReactQuill
-                theme="snow"
-                value={content}
-                onChange={handleContentChange}
-              />
+                <TiptapEditor
+                    content={content}
+                    onContentChange={handleContentChange}
+                />
             </FormControl>
             
             <HStack justifyContent="flex-end" spacing={4}>

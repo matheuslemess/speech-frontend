@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react'; // 1. Importe o useCallback
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import TiptapEditor from '../components/TiptapEditor';
+import '../styles/tiptap-custom.css'; 
 
 import { 
   Box, 
@@ -17,21 +19,6 @@ import {
   useToast 
 } from '@chakra-ui/react';
 
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import '../styles/quill-custom.css';
-
-const quillModules = {
-  toolbar: [
-    [{ 'header': [1, 2, 3, false] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{'list': 'ordered'}, {'list': 'bullet'}],
-    ['link'],
-    ['clean']
-  ],
-};
-
-const MemoizedReactQuill = React.memo(ReactQuill);
 
 function SpeechCreatorPage() {
   const [title, setTitle] = useState('');
@@ -110,13 +97,10 @@ function SpeechCreatorPage() {
 
             <FormControl isRequired>
               <FormLabel>Conteúdo:</FormLabel>
-              <MemoizedReactQuill
-                theme="snow"
-                value={content}
-                // 3. Use a nova função estabilizada aqui
-                onChange={handleContentChange}
-                modules={quillModules}
-              />
+                <TiptapEditor
+                    content={content}
+                    onContentChange={handleContentChange}
+                />
             </FormControl>
             
             <HStack justifyContent="flex-end" spacing={4}>
